@@ -1,0 +1,37 @@
+%font__properties {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 14px;
+}
+
+%button__properties {
+  border: none;
+  background-color: transparent;
+}
+
+.sort {
+  @extend %font__properties;
+  display: flex;
+  align-items: center;
+  color: var(--name-tablet);
+  gap: 8px;
+  margin-top: 72px;
+
+  &__button {
+    @extend %font__properties;
+    @extend %button__properties;
+    color: var(--name-tablet);
+    border-bottom: 1px dashed var(--name-tablet);
+    cursor: pointer;
+
+    &_active {
+      @extend %font__properties;
+      @extend %button__properties;
+      background-color: transparent;
+      border: none;
+      color: #333333;
+      border-bottom: 1px dashed #333333;
+    }
+  }
+}

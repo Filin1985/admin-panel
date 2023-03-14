@@ -1,0 +1,57 @@
+%text__properties {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.search {
+  background-color: var(--white);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 961px;
+  box-shadow: 0px 18px 15px rgba(148, 148, 148, 0.15);
+  border-radius: 7px;
+  padding: 12px 0 16px 19px;
+  gap: 24px;
+
+  &__input {
+    height: 34px;
+    width: 901px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--grey);
+    border-radius: 4px;
+  }
+
+  &__text {
+    background-color: var(--grey);
+    border: none;
+
+    &:focus {
+      outline: none;
+    }
+
+    &::placeholder {
+      @extend %text__properties;
+      color: var(--name-tablet);
+    }
+  }
+
+  &__reset {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  &__button {
+    @extend %text__properties;
+    padding: 0;
+    color: #4f4f4f;
+    background-color: var(--white);
+    border: none;
+    cursor: pointer;
+  }
+}
