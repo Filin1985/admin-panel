@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { getUserDataApi } from "../../api"
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
+import {getUserDataApi} from '../../api'
 
 export interface IUsersInfo {
   id: string
@@ -18,6 +18,8 @@ export interface IUserDataSlice {
   users: IUsersInfo[]
   dateFilteredUser: IUsersInfo[]
   ratingFilteredUser: IUsersInfo[]
+  filteredUsers: IUsersInfo[]
+  appliedFilters: string[]
 }
 
 const initialState: IUserDataSlice = {
@@ -29,11 +31,13 @@ const initialState: IUserDataSlice = {
   dateFilteredUser: [],
   ratingFilteredUser: [],
   users: [],
+  filteredUsers: [],
+  appliedFilters: [],
 }
 
 export const getUserInfo = createAsyncThunk(
-  "userInfo/getUserInfo",
-  async (_, { rejectWithValue }) => {
+  'userInfo/getUserInfo',
+  async (_, {rejectWithValue}) => {
     try {
       const response = await getUserDataApi()
       return response
@@ -44,7 +48,7 @@ export const getUserInfo = createAsyncThunk(
 )
 
 export const getUserInfoSlice = createSlice({
-  name: "userInfo",
+  name: 'userInfo',
   initialState,
   reducers: {
     sortByDate: (state) => {
@@ -61,15 +65,19 @@ export const getUserInfoSlice = createSlice({
     },
     filterByValue: (state, action) => {
       let value: string = action.payload.value
-      return {
-        ...state,
-        users:
-          [...state.users].filter((user) =>
-            user.username.toLowerCase().includes(value.toLowerCase())
-          ) ||
-          [...state.users].filter((user) =>
-            user.email.toLowerCase().includes(value.toLowerCase())
-          ),
+      let filteredValues = state.users.filter((user) =>
+        user.username.toLowerCase().includes(value.toLowerCase())
+      )
+      let appliedFilters = state.appliedFilters
+
+      if (value) {
+        appliedFilters = addFilterIfNotExists('search', appliedFilters)
+        state.filteredUsers = filteredValues
+      } else {
+        appliedFilters = removeFilter('search', appliedFilters)
+        if (appliedFilters.length === 0) {
+          state.filteredUsers = state.users
+        }
       }
     },
     deleteUser: (state, action) => {
@@ -104,6 +112,7 @@ export const getUserInfoSlice = createSlice({
           return 0
         }),
       ]
+      state.filteredUsers = [...action.payload]
       state.ratingFilteredUser = [
         ...action.payload.sort(function (userA, userB) {
           return userA.rating - userB.rating
@@ -126,3 +135,20 @@ export const {
   filterByValue,
   deleteUser,
 } = getUserInfoSlice.actions
+
+function addFilterIfNotExists(filter: string, appliedFilters: string[]) {
+  let index = appliedFilters.indexOf(filter)
+  if (index === -1) appliedFilters.push(filter)
+
+  return appliedFilters
+}
+
+function removeFilter(filter: string, appliedFilters: string[]) {
+  let index = appliedFilters.indexOf(filter)
+  appliedFilters.splice(index, 1)
+  return appliedFilters
+}
+
+function sortUsers(field: keyof IUsersInfo) {
+  return (a: IUsersInfo, b: IUsersInfo) => (a[field] > b[field] ? 1 : -1)
+}

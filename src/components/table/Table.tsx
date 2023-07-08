@@ -1,8 +1,8 @@
-import { useState } from "react"
-import styles from "./table.module.scss"
-import TableRow from "./table-row/TableRow"
-import Paginate from "../pagination/Pagination"
-import { useSelector } from "../../services/hooks"
+import {useState} from 'react'
+import styles from './table.module.scss'
+import TableRow from './table-row/TableRow'
+import Paginate from '../pagination/Pagination'
+import {useSelector} from '../../services/hooks'
 
 const PAGE_SIZE = 5
 
@@ -12,8 +12,10 @@ const Table = () => {
     isFilteredByRating,
     dateFilteredUser,
     ratingFilteredUser,
+    filteredUsers,
   } = useSelector((store) => store.userData)
-  const { users } = useSelector((store) => store.userData)
+  const {users} = useSelector((store) => store.userData)
+
   const [currentPage, setCurrentPage] = useState(1)
   const [active, setActive] = useState(1)
   const [postsPerPage] = useState(PAGE_SIZE)
@@ -24,7 +26,9 @@ const Table = () => {
     ? dateFilteredUser.slice(indexOfFirstPost, indexOfLastPost)
     : isFilteredByRating
     ? ratingFilteredUser.slice(indexOfFirstPost, indexOfLastPost)
-    : users.slice(indexOfFirstPost, indexOfLastPost)
+    : filteredUsers.slice(indexOfFirstPost, indexOfLastPost)
+
+  console.log(currentUsers)
 
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber)
@@ -34,12 +38,14 @@ const Table = () => {
   const previousPage = () => {
     if (currentPage !== 1) {
       setCurrentPage(currentPage - 1)
+      setActive(currentPage - 1)
     }
   }
 
   const nextPage = () => {
     if (currentPage !== Math.ceil(users.length / postsPerPage)) {
       setCurrentPage(currentPage + 1)
+      setActive(currentPage + 1)
     }
   }
 
@@ -48,10 +54,10 @@ const Table = () => {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th className={styles.table__head}>Имя пользователя</th>
+            <th className={styles.table__head}>Username</th>
             <th className={styles.table__head}>E-mail</th>
-            <th className={styles.table__head}>Дата регистрации</th>
-            <th className={styles.table__head}>Рейтинг</th>
+            <th className={styles.table__head}>Registration date</th>
+            <th className={styles.table__head}>Rating</th>
             <th className={styles.table__head}></th>
           </tr>
         </thead>

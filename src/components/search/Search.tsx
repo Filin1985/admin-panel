@@ -1,17 +1,17 @@
-import { ChangeEvent, useState, useEffect } from "react"
-import { SearchIcon } from "../../svg/SearchIcon"
-import { ResetIcon } from "../../svg/ResetIcon"
-import { useSelector, useDispatch } from "../../services/hooks"
+import {ChangeEvent, useState, useEffect} from 'react'
+import {SearchIcon} from '../../svg/SearchIcon'
+import {ResetIcon} from '../../svg/ResetIcon'
+import {useSelector, useDispatch} from '../../services/hooks'
 import {
   clearSortAndFilter,
   filterByValue,
-} from "../../services/slices/getUserDataSlice"
-import styles from "./search.module.scss"
+} from '../../services/slices/getUserDataSlice'
+import styles from './search.module.scss'
 
 function Search() {
-  const [filterValue, setFilterValue] = useState("")
+  const [filterValue, setFilterValue] = useState('')
   const dispatch = useDispatch()
-  const { isFilteredByDate, isFilteredByRating } = useSelector(
+  const {isFilteredByDate, isFilteredByRating} = useSelector(
     (store) => store.userData
   )
   const handleClearFilter = () => {
@@ -24,7 +24,7 @@ function Search() {
   }
 
   useEffect(() => {
-    dispatch(filterByValue({ value: filterValue }))
+    dispatch(filterByValue({value: filterValue}))
   }, [filterValue])
 
   return (
@@ -35,8 +35,8 @@ function Search() {
           value={filterValue}
           className={styles.search__text}
           onChange={filterByInput}
-          type="text"
-          placeholder="Поиск по имени или e-mail"
+          type='text'
+          placeholder='Search by name'
         />
       </div>
       <div className={styles.search__reset}>
@@ -45,7 +45,7 @@ function Search() {
             <ResetIcon />
             <button
               className={styles.search__button}
-              type="button"
+              type='button'
               onClick={handleClearFilter}
             >
               Очистить фильтр

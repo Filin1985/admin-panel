@@ -1,12 +1,9 @@
-import styles from "./sort-header.module.scss"
-import { useDispatch, useSelector } from "../../services/hooks"
-import {
-  sortByDate,
-  sortByRating,
-} from "../../services/slices/getUserDataSlice"
+import styles from './sort-header.module.scss'
+import {useDispatch, useSelector} from '../../services/hooks'
+import {sortByDate, sortByRating} from '../../services/slices/getUserDataSlice'
 
 function SortHeader() {
-  const { isFilteredByDate, isFilteredByRating } = useSelector(
+  const {isFilteredByDate, isFilteredByRating} = useSelector(
     (store) => store.userData
   )
   const dispatch = useDispatch()
@@ -21,24 +18,24 @@ function SortHeader() {
 
   return (
     <div className={styles.sort}>
-      <p className={styles.sort__title}>Сортировка:</p>
+      <p className={styles.sort__title}>Sorting types:</p>
       <button
         className={
           isFilteredByDate ? styles.sort__button_active : styles.sort__button
         }
-        type="button"
+        type='button'
         onClick={handleDateSort}
       >
-        Дата регистрации
+        Date of registration
       </button>
       <button
         className={
           isFilteredByRating ? styles.sort__button_active : styles.sort__button
         }
-        type="button"
+        type='button'
         onClick={handleRatingSort}
       >
-        Рейтинг
+        Rating
       </button>
     </div>
   )
